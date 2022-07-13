@@ -1,0 +1,77 @@
+package com.bootcamp.java.withdrawal.web;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.bootcamp.java.withdrawal.service.IEmployerService;
+import com.bootcamp.java.withdrawal.web.model.EmployerModel;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@AutoConfigureMockMvc
+@WebMvcTest(EmployerController.class)
+public class EmployerControllerTest {
+
+	@MockBean
+	private IEmployerService employerService;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	void getAll() throws Exception {
+		mockMvc.perform(get("/v1/Employer").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+	}
+
+	@Test
+	void getById() throws Exception {
+		mockMvc.perform(get("/v1/Employer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	void create() throws Exception {
+		EmployerModel employer = EmployerModel
+				.builder()
+				.ruc("20603459823")
+				.companyName("DevTech Industries")
+				.build();
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/v1/Employer").content(asJsonString(employer))
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	void update() throws Exception {
+		EmployerModel employer = EmployerModel
+				.builder()
+				.ruc("20603459823")
+				.companyName("DevTech Industries")
+				.build();
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/v1/Employer/1").content(asJsonString(employer))
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+	}
+
+	@Test
+	void deleteById() throws Exception {
+		mockMvc.perform(delete("/v1/Employer/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	public static String asJsonString(final Object obj) throws JsonProcessingException {
+
+		return new ObjectMapper().writeValueAsString(obj);
+	}
+
+}

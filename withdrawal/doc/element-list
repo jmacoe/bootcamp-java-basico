@@ -1,0 +1,7 @@
+com.bootcamp.java.withdrawal
+com.bootcamp.java.withdrawal.domain
+com.bootcamp.java.withdrawal.repository
+com.bootcamp.java.withdrawal.service
+com.bootcamp.java.withdrawal.service.mapper
+com.bootcamp.java.withdrawal.web
+com.bootcamp.java.withdrawal.web.model
